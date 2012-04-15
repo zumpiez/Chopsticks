@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.IO;
 
 namespace Chopsticks
 {
@@ -18,6 +19,10 @@ namespace Chopsticks
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        Texture2D blockTexture;
+        List<string> blockTextureReloadQueue = new List<string>();
+        FileSystemWatcher blockTextureChangeDetector = new FileSystemWatcher(@"C:\Users\Jeff\Dropbox\Projects\Chopsticks\Chopsticks\ChopsticksContent\", "block.png");
 
         public Game1()
         {
@@ -33,7 +38,14 @@ namespace Chopsticks
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            blockTexture = Content.Load<Texture2D>("block");
+
+            blockTextureChangeDetector.Changed += (source, eventArgs) =>
+            {
+                blockTextureReloadQueue.Add(eventArgs.FullPath);
+            };
+
+            blockTextureChangeDetector.EnableRaisingEvents = true;
 
             base.Initialize();
         }
@@ -70,7 +82,23 @@ namespace Chopsticks
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            // TODO: Add your update logic here
+            foreach (string s in blockTextureReloadQueue.Distinct())
+            {
+                using (FileStream fs = new FileStream(@"C:\Users\Jeff\Dropbox\Projects\Chopsticks\Chopsticks\ChopsticksContent\block.png", FileMode.Open))
+                {
+                    try
+                    {
+                        blockTexture = Texture2D.FromStream(graphics.GraphicsDevice, fs);
+                    }
+                    catch
+                    {
+                        //todo alert the user that their file is jacked up somehow
+                        blockTexture = Content.Load<Texture2D>("block");
+                    }
+                }
+            }
+
+            blockTextureReloadQueue.Clear();
 
             base.Update(gameTime);
         }
@@ -83,7 +111,9 @@ namespace Chopsticks
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            spriteBatch.Draw(blockTexture, new Vector2(200, 200), Color.White);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
