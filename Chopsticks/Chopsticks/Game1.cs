@@ -48,7 +48,7 @@ namespace Chopsticks
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            blockTexture = new HotloadableTexture2D(graphics.GraphicsDevice, @"C:\Users\Jeff\Dropbox\Projects\Chopsticks\Chopsticks\ChopsticksContent\block.png");
+            blockTexture = new HotloadableTexture2D(graphics.GraphicsDevice, @"..\..\..\..\ChopsticksContent\block.png");
             // TODO: use this.Content to load your game content here
         }
 
