@@ -20,9 +20,7 @@ namespace Chopsticks
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Texture2D blockTexture;
-        List<string> blockTextureReloadQueue = new List<string>();
-        FileSystemWatcher blockTextureChangeDetector = new FileSystemWatcher(@"C:\Users\Jeff\Dropbox\Projects\Chopsticks\Chopsticks\ChopsticksContent\", "block.png");
+        HotloadableTexture2D blockTexture;
 
         public Game1()
         {
@@ -38,15 +36,6 @@ namespace Chopsticks
         /// </summary>
         protected override void Initialize()
         {
-            blockTexture = Content.Load<Texture2D>("block");
-
-            blockTextureChangeDetector.Changed += (source, eventArgs) =>
-            {
-                blockTextureReloadQueue.Add(eventArgs.FullPath);
-            };
-
-            blockTextureChangeDetector.EnableRaisingEvents = true;
-
             base.Initialize();
         }
 
@@ -59,6 +48,7 @@ namespace Chopsticks
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            blockTexture = new HotloadableTexture2D(graphics.GraphicsDevice, @"C:\Users\Jeff\Dropbox\Projects\Chopsticks\Chopsticks\ChopsticksContent\block.png");
             // TODO: use this.Content to load your game content here
         }
 
@@ -82,24 +72,6 @@ namespace Chopsticks
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            foreach (string s in blockTextureReloadQueue.Distinct())
-            {
-                using (FileStream fs = new FileStream(@"C:\Users\Jeff\Dropbox\Projects\Chopsticks\Chopsticks\ChopsticksContent\block.png", FileMode.Open))
-                {
-                    try
-                    {
-                        blockTexture = Texture2D.FromStream(graphics.GraphicsDevice, fs);
-                    }
-                    catch
-                    {
-                        //todo alert the user that their file is jacked up somehow
-                        blockTexture = Content.Load<Texture2D>("block");
-                    }
-                }
-            }
-
-            blockTextureReloadQueue.Clear();
-
             base.Update(gameTime);
         }
 
@@ -112,7 +84,7 @@ namespace Chopsticks
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(blockTexture, new Vector2(200, 200), Color.White);
+            spriteBatch.Draw(blockTexture.Texture, new Vector2(200, 200), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
