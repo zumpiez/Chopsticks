@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System.IO;
+using Chopsticks.Resources;
 
 namespace Chopsticks
 {
@@ -20,12 +21,14 @@ namespace Chopsticks
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        HotloadableTexture2D blockTexture;
+        TextureLibrary library;
+        private Texture2D blockTex;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
         }
 
         /// <summary>
@@ -36,6 +39,7 @@ namespace Chopsticks
         /// </summary>
         protected override void Initialize()
         {
+            library = new TextureLibrary(GraphicsDevice, "../../../../ChopsticksContent/");
             base.Initialize();
         }
 
@@ -48,8 +52,8 @@ namespace Chopsticks
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            blockTexture = new HotloadableTexture2D(graphics.GraphicsDevice, @"..\..\..\..\ChopsticksContent\block.png");
             // TODO: use this.Content to load your game content here
+            blockTex = library.GetTexture("block");
         }
 
         /// <summary>
@@ -84,7 +88,7 @@ namespace Chopsticks
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(blockTexture.Texture, new Vector2(200, 200), Color.White);
+            spriteBatch.Draw(blockTex, new Vector2(200, 200), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
