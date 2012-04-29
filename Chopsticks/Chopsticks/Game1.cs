@@ -56,7 +56,6 @@ namespace Chopsticks
             RuntimeTests();
 
             // TODO: use this.Content to load your game content here
-            this.blockTex = library.GetTexture("block");
         }
 
         /// <summary>
@@ -91,7 +90,8 @@ namespace Chopsticks
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(blockTex, new Vector2(200, 200), Color.White);
+            spriteBatch.Draw(library.GetTexture("block"), new Vector2(200, 0), Color.White);
+            spriteBatch.Draw(library.GetTexture("block"), new Vector2(0, 200), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
