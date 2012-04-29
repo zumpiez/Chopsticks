@@ -53,7 +53,7 @@ namespace Chopsticks
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            AdHocTests();
+            RuntimeTests();
 
             // TODO: use this.Content to load your game content here
             this.blockTex = library.GetTexture("block");
@@ -100,7 +100,7 @@ namespace Chopsticks
         /// <summary>
         /// Assert things that aren't easily tested in unit tests because XNA... XNA, she is an untestable bitch.
         /// </summary>
-        private void AdHocTests()
+        private void RuntimeTests()
         {
             //assert that two calls to get the same texture result in the same texture instance.
             var blockTex = library.GetTexture("block");
