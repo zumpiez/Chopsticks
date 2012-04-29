@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System.IO;
 using Chopsticks.Resources;
+using System.Diagnostics;
 
 namespace Chopsticks
 {
@@ -52,8 +53,10 @@ namespace Chopsticks
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            AdHocTests();
+
             // TODO: use this.Content to load your game content here
-            blockTex = library.GetTexture("block");
+            this.blockTex = library.GetTexture("block");
         }
 
         /// <summary>
@@ -92,6 +95,17 @@ namespace Chopsticks
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        /// <summary>
+        /// Assert things that aren't easily tested in unit tests because XNA... XNA, she is an untestable bitch.
+        /// </summary>
+        private void AdHocTests()
+        {
+            //assert that two calls to get the same texture result in the same texture instance.
+            var blockTex = library.GetTexture("block");
+            var otherBlockTex = library.GetTexture("block");
+            Debug.Assert(blockTex == otherBlockTex, "Got two different references to the same image from GetTexture");
         }
     }
 }
