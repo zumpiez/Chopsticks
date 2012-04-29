@@ -81,7 +81,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Resources\TextureLibrary.cs" />
-    <Compile Include="Resources\TextureLibraryTests.cs" />
     <Compile Include="StupidTest.cs" />
   </ItemGroup>
   <ItemGroup>
