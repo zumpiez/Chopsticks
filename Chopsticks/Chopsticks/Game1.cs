@@ -22,7 +22,7 @@ namespace Chopsticks
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        TextureLibrary library;
+        TextureAtlas library;
         private Texture2D blockTex;
 
         public Game1()
@@ -40,7 +40,7 @@ namespace Chopsticks
         /// </summary>
         protected override void Initialize()
         {
-            library = new TextureLibrary(GraphicsDevice, "../../../../ChopsticksContent/");
+            library = new TextureAtlas(GraphicsDevice, "../../../../ChopsticksContent/");
             base.Initialize();
         }
 

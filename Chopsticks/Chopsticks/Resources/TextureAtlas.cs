@@ -7,12 +7,12 @@ using System.IO;
 
 namespace Chopsticks.Resources
 {
-    class TextureLibrary
+    class TextureAtlas
     {
         private GraphicsDevice device;
         private Dictionary<String, Texture2D> atlas;
 
-        public TextureLibrary(GraphicsDevice device, string path, string defaultExtension = ".png")
+        public TextureAtlas(GraphicsDevice device, string path, string defaultExtension = ".png")
         {
             this.device = device;
             this.Path = path;
