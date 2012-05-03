@@ -24,6 +24,7 @@ namespace Chopsticks
 
         TextureAtlas library;
         private Texture2D blockTex;
+        private Map map;
 
         public Game1()
         {
@@ -55,6 +56,12 @@ namespace Chopsticks
 
             RuntimeTests();
 
+            this.map = new Map();
+            map.Insert("cloud", new Transformation(0, 0, 1, 0.1f, 2, 1));
+            map.Insert("cloud", new Transformation(100, 100, 0.5f));
+            map.Insert("block", new Transformation(75, 95, 0.3f, -0.1f, 1.2f, 0.8f));
+            map.Insert("block", new Transformation(150, 150));
+            
             // TODO: use this.Content to load your game content here
         }
 
@@ -89,9 +96,14 @@ namespace Chopsticks
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
-            spriteBatch.Draw(library.GetTexture("block"), new Vector2(200, 0), Color.White);
-            spriteBatch.Draw(library.GetTexture("block"), new Vector2(0, 200), Color.White);
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
+            foreach(var textureName in map.Scene.Keys) {
+                var texture = library.GetTexture(textureName);
+                foreach (var transformation in map.Scene[textureName])
+                {
+                    spriteBatch.Draw(texture, transformation.Translation, null, Color.White, transformation.Rotation, Vector2.Zero, transformation.Scale, SpriteEffects.None, transformation.SortDepth);
+                }
+            }
             spriteBatch.End();
 
             base.Draw(gameTime);
